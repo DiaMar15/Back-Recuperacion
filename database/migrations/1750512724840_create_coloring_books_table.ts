@@ -14,6 +14,7 @@ export default class extends BaseSchema {
       table.boolean('activo').defaultTo(true)
       table.integer('cantidad_paginas') // ✅ Funcionalidad adicional 1
       table.integer('popularidad').defaultTo(0) // ✅ Funcionalidad adicional 2
+      table.boolean('destacado').defaultTo(false)
       table.timestamps()
     })
   }
