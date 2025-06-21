@@ -23,13 +23,15 @@ export default class ColoringBook extends BaseModel {
   @column()
   public activo: boolean
 
-  // ✅ Funcionalidad adicional 1
   @column()
   public cantidadPaginas: number
 
-  // ✅ Funcionalidad adicional 2
   @column()
   public popularidad: number
+
+  // ✅ Agregado: campo destacado
+  @column()
+  public destacado: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
