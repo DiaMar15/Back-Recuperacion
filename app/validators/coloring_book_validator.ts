@@ -12,8 +12,7 @@ export const coloringBookValidator = vine.compile(
     cantidadPaginas: vine.number().positive().max(1000),
     popularidad: vine.number().min(0),
     destacado: vine.boolean().optional(),
-    pageRangeId: vine.number().positive(), // FK
-    portada: vine.string().optional(),
+    pageRangeId: vine.number().optional().nullable(),
   })
 )
 
@@ -28,7 +27,6 @@ export const partialColoringBookValidator = vine.compile(
     cantidadPaginas: vine.number().positive().max(1000).optional(),
     popularidad: vine.number().min(0).optional(),
     destacado: vine.boolean().optional(),
-    pageRangeId: vine.number().positive().optional(), // FK
-    portada: vine.string().optional(),
+    pageRangeId: vine.number().optional().nullable(),
   })
 )

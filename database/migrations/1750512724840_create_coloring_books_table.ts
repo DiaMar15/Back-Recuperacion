@@ -17,8 +17,6 @@ export default class ColoringBooks extends BaseSchema {
       table.integer('popularidad').unsigned().defaultTo(0)
       table.boolean('destacado').defaultTo(false)
 
-      table.string('portada').nullable()
-
       // ✅ Llave foránea a page_ranges
       table
         .integer('page_range_id')

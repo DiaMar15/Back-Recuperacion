@@ -35,9 +35,6 @@ export default class ColoringBook extends BaseModel {
   public destacado: boolean
 
   @column()
-  declare portada: string | null
-
-  @column()
   public pageRangeId: number | null
 
   // ✅ Relación con rango de páginas

@@ -7,13 +7,6 @@ import {
 } from '#validators/coloring_book_validator'
 
 export default class ColoringBooksController {
-  private withPortadaUrl(book: ColoringBook) {
-    return {
-      ...book.toJSON(),
-      portada_url: book.portada ? `/uploads/${book.portada}` : null,
-    }
-  }
-
   /**
    * Listar libros con filtros opcionales: activo, popularidad, categoría
    * GET /coloring-books?activo=true&min_popularidad=1000&categoria=Mandala
@@ -37,8 +30,7 @@ export default class ColoringBooksController {
       query.where('categoria', categoria)
     }
 
-    const books = await query.orderBy('created_at', 'desc')
-    return books.map(this.withPortadaUrl)
+    return await query.orderBy('created_at', 'desc')
   }
 
   /**
@@ -47,7 +39,7 @@ export default class ColoringBooksController {
   public async store({ request, response }: HttpContext) {
     const data = await request.validateUsing(coloringBookValidator)
     const book = await ColoringBook.create(data)
-    return response.created(this.withPortadaUrl(book))
+    return response.created(book)
   }
 
   /**
@@ -60,7 +52,7 @@ export default class ColoringBooksController {
       return response.notFound({ message: 'Libro no encontrado' })
     }
 
-    return this.withPortadaUrl(book)
+    return book
   }
 
   /**
@@ -77,7 +69,7 @@ export default class ColoringBooksController {
     book.merge(data)
     await book.save()
 
-    return this.withPortadaUrl(book)
+    return book
   }
 
   /**
@@ -112,6 +104,6 @@ export default class ColoringBooksController {
     book.deletedAt = null
     await book.save()
 
-    return this.withPortadaUrl(book)
+    return book
   }
 }

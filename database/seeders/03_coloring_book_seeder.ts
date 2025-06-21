@@ -14,7 +14,6 @@ export default class extends BaseSeeder {
         activo: true,
         cantidadPaginas: 50,
         popularidad: 1200,
-        imagenUrl: '/uploads/animals_fantastic.jpg',
         pageRangeId: null,
       },
       {
@@ -27,7 +26,6 @@ export default class extends BaseSeeder {
         activo: true,
         cantidadPaginas: 60,
         popularidad: 3000,
-        imagenUrl: '/uploads/mandalas.jpg',
         pageRangeId: null,
       },
       {
@@ -39,7 +37,6 @@ export default class extends BaseSeeder {
         activo: true,
         cantidadPaginas: 45,
         popularidad: 950,
-        imagenUrl: '/uploads/animal_patterns.jpg',
         pageRangeId: null,
       },
       {
@@ -52,7 +49,6 @@ export default class extends BaseSeeder {
         activo: false,
         cantidadPaginas: 70,
         popularidad: 2100,
-        imagenUrl: '/uploads/comfy_days.jpg',
         pageRangeId: null,
       },
       {
@@ -65,7 +61,6 @@ export default class extends BaseSeeder {
         activo: true,
         cantidadPaginas: 55,
         popularidad: 500,
-        imagenUrl: '/uploads/mystical_world.jpg',
         pageRangeId: null,
       },
       {
@@ -78,7 +73,6 @@ export default class extends BaseSeeder {
         activo: false,
         cantidadPaginas: 40,
         popularidad: 1900,
-        imagenUrl: '/uploads/color_by_number.jpg',
         pageRangeId: null,
       },
     ])
