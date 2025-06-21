@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import PageRange from '#models/page_range'
 
 export default class ColoringBook extends BaseModel {
   @column({ isPrimary: true })
@@ -18,7 +20,7 @@ export default class ColoringBook extends BaseModel {
   public descripcion: string
 
   @column()
-  public precio: number
+  public precio: number // Entero (sin decimales)
 
   @column()
   public activo: boolean
@@ -29,10 +31,24 @@ export default class ColoringBook extends BaseModel {
   @column()
   public popularidad: number
 
-  // ✅ Agregado: campo destacado
   @column()
   public destacado: boolean
 
+  @column()
+  declare portada: string | null
+
+  @column()
+  public pageRangeId: number | null
+
+  // ✅ Relación con rango de páginas
+  @belongsTo(() => PageRange)
+  public pageRange: BelongsTo<typeof PageRange>
+
+  // ✅ Soft delete
+  @column.dateTime()
+  public deletedAt: DateTime | null
+
+  // ✅ Timestamps
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

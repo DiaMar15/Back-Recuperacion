@@ -1,17 +1,25 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ColoringBook from '#models/coloring_book'
+import { DateTime } from 'luxon'
 import {
   coloringBookValidator,
   partialColoringBookValidator,
 } from '#validators/coloring_book_validator'
 
 export default class ColoringBooksController {
+  private withPortadaUrl(book: ColoringBook) {
+    return {
+      ...book.toJSON(),
+      portada_url: book.portada ? `/uploads/${book.portada}` : null,
+    }
+  }
+
   /**
    * Listar libros con filtros opcionales: activo, popularidad, categoría
    * GET /coloring-books?activo=true&min_popularidad=1000&categoria=Mandala
    */
   public async index({ request }: HttpContext) {
-    const query = ColoringBook.query()
+    const query = ColoringBook.query().whereNull('deleted_at')
 
     const activo = request.input('activo')
     const minPopularidad = request.input('min_popularidad')
@@ -29,7 +37,8 @@ export default class ColoringBooksController {
       query.where('categoria', categoria)
     }
 
-    return await query.orderBy('created_at', 'desc')
+    const books = await query.orderBy('created_at', 'desc')
+    return books.map(this.withPortadaUrl)
   }
 
   /**
@@ -38,27 +47,27 @@ export default class ColoringBooksController {
   public async store({ request, response }: HttpContext) {
     const data = await request.validateUsing(coloringBookValidator)
     const book = await ColoringBook.create(data)
-    return response.created(book)
+    return response.created(this.withPortadaUrl(book))
   }
 
   /**
-   * Mostrar un solo libro por ID
+   * Mostrar un solo libro por ID (solo si no está eliminado)
    */
   public async show({ params, response }: HttpContext) {
-    const book = await ColoringBook.find(params.id)
+    const book = await ColoringBook.query().where('id', params.id).whereNull('deleted_at').first()
 
     if (!book) {
       return response.notFound({ message: 'Libro no encontrado' })
     }
 
-    return book
+    return this.withPortadaUrl(book)
   }
 
   /**
-   * Actualizar un libro con validación parcial
+   * Actualizar un libro con validación parcial (solo si no está eliminado)
    */
   public async update({ params, request, response }: HttpContext) {
-    const book = await ColoringBook.find(params.id)
+    const book = await ColoringBook.query().where('id', params.id).whereNull('deleted_at').first()
 
     if (!book) {
       return response.notFound({ message: 'Libro no encontrado' })
@@ -68,20 +77,41 @@ export default class ColoringBooksController {
     book.merge(data)
     await book.save()
 
-    return book
+    return this.withPortadaUrl(book)
   }
 
   /**
-   * Eliminar un libro por ID
+   * Eliminar un libro por ID (Soft Delete)
    */
   public async destroy({ params, response }: HttpContext) {
-    const book = await ColoringBook.find(params.id)
+    const book = await ColoringBook.query().where('id', params.id).whereNull('deleted_at').first()
 
     if (!book) {
-      return response.notFound({ message: 'Libro no encontrado' })
+      return response.notFound({ message: 'Libro no encontrado o ya eliminado' })
     }
 
-    await book.delete()
+    book.deletedAt = DateTime.now()
+    await book.save()
+
     return response.noContent()
+  }
+
+  /**
+   * Restaurar un libro eliminado
+   */
+  public async restore({ params, response }: HttpContext) {
+    const book = await ColoringBook.query()
+      .where('id', params.id)
+      .whereNotNull('deleted_at')
+      .first()
+
+    if (!book) {
+      return response.notFound({ message: 'Libro no encontrado o no está eliminado' })
+    }
+
+    book.deletedAt = null
+    await book.save()
+
+    return this.withPortadaUrl(book)
   }
 }

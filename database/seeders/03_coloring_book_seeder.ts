@@ -14,6 +14,8 @@ export default class extends BaseSeeder {
         activo: true,
         cantidadPaginas: 50,
         popularidad: 1200,
+        imagenUrl: '/uploads/animals_fantastic.jpg',
+        pageRangeId: null,
       },
       {
         titulo: 'Mandalas para la Calma Mental',
@@ -25,6 +27,8 @@ export default class extends BaseSeeder {
         activo: true,
         cantidadPaginas: 60,
         popularidad: 3000,
+        imagenUrl: '/uploads/mandalas.jpg',
+        pageRangeId: null,
       },
       {
         titulo: 'Patrones Animales Intrincados',
@@ -35,6 +39,8 @@ export default class extends BaseSeeder {
         activo: true,
         cantidadPaginas: 45,
         popularidad: 950,
+        imagenUrl: '/uploads/animal_patterns.jpg',
+        pageRangeId: null,
       },
       {
         titulo: 'Días Cómodos - Libro para Colorear',
@@ -46,6 +52,8 @@ export default class extends BaseSeeder {
         activo: false,
         cantidadPaginas: 70,
         popularidad: 2100,
+        imagenUrl: '/uploads/comfy_days.jpg',
+        pageRangeId: null,
       },
       {
         titulo: 'Mundo Místico y Fantástico',
@@ -57,6 +65,8 @@ export default class extends BaseSeeder {
         activo: true,
         cantidadPaginas: 55,
         popularidad: 500,
+        imagenUrl: '/uploads/mystical_world.jpg',
+        pageRangeId: null,
       },
       {
         titulo: 'Colorear por Números para Adultos',
@@ -68,6 +78,8 @@ export default class extends BaseSeeder {
         activo: false,
         cantidadPaginas: 40,
         popularidad: 1900,
+        imagenUrl: '/uploads/color_by_number.jpg',
+        pageRangeId: null,
       },
     ])
   }
